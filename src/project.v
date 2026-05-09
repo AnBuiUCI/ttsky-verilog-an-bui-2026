@@ -92,7 +92,7 @@ module tt_um_main_fsm_anbui_uci (
     assign uo_out[5] = (state == WALK_AWAY);     // motor3_on
     assign uo_out[6] = (state == WALK_AWAY);     // motor4_on
 
-    assign uo_out[7] = contains_drug;            // debug: has_drug
+    assign uo_out[7] = 1'b0;
 
     // Unused bidirectional IOs
     assign uio_out = 8'b00000000;
