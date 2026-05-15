@@ -1,9 +1,9 @@
 # Tiny Tapeout project information
 project:
-  title:        ""      # Swarm Microrobot Drug Delivery FSM
-  author:       ""      # An Bui
-  discord:      ""      # teareverie
-  description:  ""      # Finite state machine for clot detection, swarm communication, drug release, and motor control
+  title:        "Swarm Microrobot Drug Delivery FSM"      
+  author:       "An Bui"     
+  discord:      "teareverie"      
+  description:  "Finite state machine for clot detection, swarm communication, drug release, and motor control"     
   language:     "Verilog" # other examples include SystemVerilog, Amaranth, VHDL, etc
   clock_hz:     100000000       # Clock frequency in Hz (or 0 if not applicable)
 
