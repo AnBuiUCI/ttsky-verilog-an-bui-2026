@@ -61,6 +61,7 @@ The design internally stores whether the robot still contains drug using a regis
 10. Next clock cycle (clear ui_in). The FSM returns to RANDOM_WALK. All outputs return to 0.
 
 
+StepActionui_in[1:0]Stateuo_out[6:0]What happen1Reset00RANDOM_WALK0000000Robot wake up, drug loaded2Idle00RANDOM_WALK0000000Robot wander, nothing happen3Clot + drug01RELEASE_DRUG0000011Drug go out, TX clot signal4Auto00WALK_AWAY1111100Motors on, drug gone forever5Auto00RANDOM_WALK0000100Back to wander, no drug flag stay6Clot, no drug01CLOT_NO_DRUG0000110TX clot, but no drug to give7Auto00WALK_AWAY1111100Motors on again8Auto00RANDOM_WALK0000100Wander again9Reset + nearby10WALK_AWAY1111000Drug reloaded, dodge neighbor clot10Auto00RANDOM_WALK0000000All quiet, drug still loaded
 
 ## External hardware
 
