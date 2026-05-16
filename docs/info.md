@@ -61,7 +61,22 @@ The design internally stores whether the robot still contains drug using a regis
 10. Next clock cycle (clear ui_in). The FSM returns to RANDOM_WALK. All outputs return to 0.
 
 
-StepActionui_in[1:0]Stateuo_out[6:0]What happen1Reset00RANDOM_WALK0000000Robot wake up, drug loaded2Idle00RANDOM_WALK0000000Robot wander, nothing happen3Clot + drug01RELEASE_DRUG0000011Drug go out, TX clot signal4Auto00WALK_AWAY1111100Motors on, drug gone forever5Auto00RANDOM_WALK0000100Back to wander, no drug flag stay6Clot, no drug01CLOT_NO_DRUG0000110TX clot, but no drug to give7Auto00WALK_AWAY1111100Motors on again8Auto00RANDOM_WALK0000100Wander again9Reset + nearby10WALK_AWAY1111000Drug reloaded, dodge neighbor clot10Auto00RANDOM_WALK0000000All quiet, drug still loaded
+## Test Procedure
+
+| Step | Action | ui_in[1:0] | State | uo_out[6:0] | Description |
+|------|--------|-----------|-------|-------------|-------------|
+| 1 | Reset | 00 | RANDOM_WALK | 0000000 | Robot initializes with drug loaded |
+| 2 | Idle | 00 | RANDOM_WALK | 0000000 | No inputs, robot stays wandering |
+| 3 | Clot + drug | 01 | RELEASE_DRUG | 0000011 | Drug release command and clot TX go HIGH |
+| 4 | Auto | 00 | WALK_AWAY | 1111100 | Motors on, drug permanently cleared |
+| 5 | Auto | 00 | RANDOM_WALK | 0000100 | Back to wander, no-drug flag stays HIGH |
+| 6 | Clot, no drug | 01 | CLOT_NO_DRUG | 0000110 | Clot TX HIGH, no release command |
+| 7 | Auto | 00 | WALK_AWAY | 1111100 | Motors on |
+| 8 | Auto | 00 | RANDOM_WALK | 0000100 | Return to wander |
+| 9 | Reset + nearby | 10 | WALK_AWAY | 1111000 | Drug reloaded, dodge on neighbor signal |
+| 10 | Auto | 00 | RANDOM_WALK | 0000000 | All outputs LOW, drug still loaded |
+
+> Note: uo_out[7] is hardwired LOW and omitted from the table.
 
 ## External hardware
 
