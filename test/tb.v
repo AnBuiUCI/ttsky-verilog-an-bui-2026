@@ -79,9 +79,6 @@ module tb ();
     endtask
 
     initial begin
-        $dumpfile("tb_tt_um_main_fsm.vcd");
-        $dumpvars(0, tb_tt_um_main_fsm);
-
         // Init
         clk   = 0;
         rst_n = 0;
