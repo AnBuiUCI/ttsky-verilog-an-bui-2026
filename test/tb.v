@@ -185,5 +185,8 @@ module tb_tt_um_main_fsm;
         $display("========================================");
         $finish;
     end
-
+initial begin
+    $dumpfile("tb.vcd");
+    $dumpvars(0, tb);
+end
 endmodule
