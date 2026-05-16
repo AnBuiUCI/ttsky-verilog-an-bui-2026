@@ -40,23 +40,27 @@ The design internally stores whether the robot still contains drug using a regis
 
 ## How to test
 
-1. Apply reset (rst_n = 0) to initialize the system.
-The robot starts with drug available.
-uo_out[7] should become HIGH.
+1. Apply reset (rst_n = 0, then rst_n = 1). The FSM initializes to RANDOM_WALK with the drug loaded. All uo_out bits are 0.
 
-2. Set ui_in[1] = 1 to simulate a nearby clot RX signal.
-The FSM enters WALK_AWAY.
-Motor outputs uo_out[3:6] become HIGH.
+2. Hold idle (ui_in = 0) for one clock cycle. The FSM remains in RANDOM_WALK. All uo_out bits stay 0. This confirms no spurious transitions occur.
 
-3. Set ui_in[0] = 1 while drug is available.
-uo_out[0] becomes HIGH to release drug.
-uo_out[1] becomes HIGH to transmit clot detected TX.
-After drug release, uo_out[7] becomes LOW.
+3. Set ui_in\[0\] = 1 to simulate a local clot detection while the drug is still available. The FSM transitions to RELEASE_DRUG. uo_out\[0\] goes HIGH (drug release command). uo_out\[1\] goes HIGH (clot detected TX). uo_out[2] remains LOW because the drug is still present during this cycle. Motors remain off.
 
-4. Set ui_in[0] = 1 again after drug is used.
-uo_out[0] remains LOW.
-uo_out[1] remains HIGH.
-uo_out[2] becomes HIGH to transmit no-drug TX.
+4. Next clock cycle (clear ui_in). The FSM transitions to WALK_AWAY and contains_drug clears to 0. uo_out\[0\] and uo_out\[1\] go LOW. uo_out\[2\] goes HIGH (no drug TX). uo_out\[3\] through uo_out\[6\] go HIGH (all four motors on).
+
+5. Next clock cycle. The FSM returns to RANDOM_WALK. Motors turn off. uo_out\[2\] remains HIGH because the drug is permanently gone.
+
+6. Set ui_in\[0\] = 1 again to detect a clot without any drug. The FSM enters CLOT_NO_DRUG. uo_out\[0\] stays LOW (no drug to release). uo_out\[1\] goes HIGH (clot detected TX). uo_out\[2\] remains HIGH (no drug).
+
+7. Next clock cycle (clear ui_in). The FSM transitions to WALK_AWAY. uo_out\[3\] through uo_out\[6\] go HIGH. uo_out\[2\] stays HIGH.
+
+8. Next clock cycle. The FSM returns to RANDOM_WALK again.
+
+9. Apply reset again (rst_n = 0, then 1) to reload the drug. Now set ui_in\[1\] = 1 to test the clot_nearby path. The FSM enters WALK_AWAY directly. uo_out\[3\] through uo_out\[6\] go HIGH. uo_out\[2\] stays LOW because the drug is still loaded. No release command, no clot TX.
+
+10. Next clock cycle (clear ui_in). The FSM returns to RANDOM_WALK. All outputs return to 0.
+
+
 
 ## External hardware
 
