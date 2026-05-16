@@ -6,7 +6,9 @@ This project implements a finite state machine (FSM) in Verilog for a simplified
 The design models autonomous microrobot behavior for detecting blood clots, coordinating with nearby robots through communication signals, releasing a drug payload, and driving motors to move away from clot regions.
 
 Features
+
 Blood clot detection input
+
 Swarm communication using RX/TX signaling
 Internal drug availability memory
 Drug release control output
